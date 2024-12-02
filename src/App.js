@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './index.css';
 
-
-// Quiz Questions
 const questions = [
   {
     question: 'What does PHP stand for?',
@@ -116,14 +114,12 @@ export default function QuizApp() {
     const [feedback, setFeedback] = useState('');
     const [timer, setTimer] = useState(null);
 
-    // Timer Formatting Function
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
         return `${minutes}m ${remainingSeconds}s`;
     };
 
-    // Start Quiz
     const startQuiz = () => {
         setCurrentView('quiz');
         setCurrentQuestionIndex(0);
@@ -131,7 +127,6 @@ export default function QuizApp() {
         setUserAnswers([]);
         setTotalQuizTime(30 * 60);
         
-        // Start Timer
         const timerId = setInterval(() => {
             setTotalQuizTime(prev => {
                 if (prev <= 0) {
@@ -146,19 +141,16 @@ export default function QuizApp() {
         setTimer(timerId);
     };
 
-    // Handle Option Selection
     const handleOptionSelect = (optionKey) => {
         setSelectedOption(optionKey);
     };
 
-    // Next Question
     const nextQuestion = () => {
         if (!selectedOption) {
             alert('Please select an option!');
             return;
         }
 
-        // Check if answer is correct
         const currentQuestion = questions[currentQuestionIndex];
         const newUserAnswers = [...userAnswers, selectedOption];
         setUserAnswers(newUserAnswers);
@@ -170,7 +162,6 @@ export default function QuizApp() {
             setFeedback('Incorrect!');
         }
 
-        // Move to next question or end quiz
         if (currentQuestionIndex + 1 < questions.length) {
             setCurrentQuestionIndex(prev => prev + 1);
             setSelectedOption(null);
@@ -179,29 +170,24 @@ export default function QuizApp() {
         }
     };
 
-    // Show Feedback
     const showFeedback = () => {
         if (timer) clearInterval(timer);
         setCurrentView('feedback');
     };
 
-    // Show Results
     const showResults = () => {
         setCurrentView('results');
     };
 
-    // Restart Quiz
     const restartQuiz = () => {
         startQuiz();
     };
 
-    // Return to Home
     const goHome = () => {
         if (timer) clearInterval(timer);
         setCurrentView('home');
     };
 
-    // Render Views
     const renderHomeView = () => (
         <div className="w-full max-w-md text-center bg-gray-900 p-6 rounded-lg shadow-2xl border border-gray-700">
             <h2 className="text-2xl font-bold mb-4 text-white">Tech Quiz Challenge</h2>
@@ -218,11 +204,9 @@ export default function QuizApp() {
         const currentQuestion = questions[currentQuestionIndex];
         const progressPercentage = ((currentQuestionIndex + 1) / questions.length) * 100;
 
-        
         return (
             <div className="w-full max-w-md bg-gray-900 p-6 rounded-lg shadow-2xl border border-gray-700">
                 <h2 className="text-2xl font-bold mb-4 text-white">Quiz Game</h2>
-                {/* Progress Bar */}
                 <div className="w-full bg-gray-700 rounded-full h-1.5 mb-4">
                     <div 
                         className="bg-blue-600 h-1.5 rounded-full transition-all duration-300" 
@@ -251,14 +235,7 @@ export default function QuizApp() {
                         {feedback}
                     </div>
                 )}
-                <div className="flex justify-between">
-                    <button 
-                        className="bg-gray-800 text-gray-300 px-4 py-2 rounded disabled:opacity-50"
-                        onClick={() => setCurrentQuestionIndex(prev => Math.max(0, prev - 1))}
-                        disabled={currentQuestionIndex === 0}
-                    >
-                        Previous
-                    </button>
+                <div className="flex justify-center">
                     <button 
                         className="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800"
                         onClick={nextQuestion}
@@ -327,7 +304,6 @@ export default function QuizApp() {
         </div>
     );
 
-    // Main Render
     return (
         <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white">
             {currentView === 'home' && renderHomeView()}
